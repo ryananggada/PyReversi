@@ -3,11 +3,14 @@ import random
 BLACK = 'x'
 WHITE = 'o'
 curBoard = [['.' for x in range(8)] for y in range(8)]
-turn = BLACK
 noMoves = 0
 
 curBoard[3][3], curBoard[3][4] = WHITE, BLACK
 curBoard[4][3], curBoard[4][4] = BLACK, WHITE
+
+def resetBoard():
+    curBoard = [['.' for x in range(8)] for y in range(8)]
+    noMoves = 0
 
 def showBoard(board):
     for x in range(8):
@@ -88,11 +91,13 @@ def getValidMoves(board, turn):
     return validMoves
 
 # temp function
+'''
 def showValidMoves(board, validMoves):
     for x, y in validMoves:
         board[x][y] = '!'
 
     return board
+'''
 
 def makeMove(board, turn, x_pos, y_pos):
     tilesToFlip = getDisksToFlip(board, turn, x_pos, y_pos)
@@ -104,7 +109,8 @@ def makeMove(board, turn, x_pos, y_pos):
 
     return board
 
-"""while getEmptyTiles(curBoard) != 0 and noMoves != 2:
+"""
+while getEmptyTiles(curBoard) != 0 and noMoves != 2:
     print(turn)
     validMoves = getValidMoves(curBoard, turn)
     print(validMoves)
@@ -119,4 +125,5 @@ def makeMove(board, turn, x_pos, y_pos):
     if turn == BLACK:
         turn = WHITE
     else:
-        turn = BLACK"""
+        turn = BLACK
+"""
