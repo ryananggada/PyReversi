@@ -109,6 +109,18 @@ def makeMove(board, turn, x_pos, y_pos):
 
     return board
 
+def getScore(board):
+    black = 0
+    white = 0
+    
+    for x in range(8):
+        for y in range(8):
+            if board[x][y] == BLACK:
+                black += 1
+            elif board[x][y] == WHITE:
+                white += 1
+    return black, white
+
 """
 while getEmptyTiles(curBoard) != 0 and noMoves != 2:
     print(turn)

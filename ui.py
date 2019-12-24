@@ -19,6 +19,8 @@ def InGame():
     screen.fill((255, 255, 0))
     rf.resetBoard()
     curTurn = rf.BLACK
+    font = pygame.font.SysFont('Arial', 20)
+    big_font = pygame.font.SysFont('Arial', 100)
 
     tiles = Group()
     disks = Group()
@@ -39,6 +41,13 @@ def InGame():
 
     while True:
         while rf.getEmptyTiles(rf.curBoard) != 0 and rf.noMoves != 2:
+            screen.fill((255, 255, 0))
+            if curTurn == rf.BLACK:
+                turn = 'black'
+            else:
+                turn = 'white'
+            turn_text = font.render('It is ' + turn + '\'s turn.', False, (0,0,0))
+            screen.blit(turn_text, (5,5))
             tiles.draw(screen)
             disks.draw(screen)
             display.update()
@@ -64,6 +73,18 @@ def InGame():
                                 curTurn = rf.WHITE
                             elif curTurn == rf.WHITE:
                                 curTurn = rf.BLACK
-                    display.update()
+                    #display.update()
+                                
+        black, white = rf.getScore(rf.curBoard)
+        screen.fill((255, 255, 0))
+        black_score = big_font.render('Black got ' + str(black), False, (0,0,0))
+        white_score = big_font.render('White got ' + str(white), False, (0,0,0))
+        screen.blit(black_score, (260,200))
+        screen.blit(white_score, (260,30))
+        display.update()
+        for evg in event.get():
+                    if evg.type == QUIT:
+                        display.quit()
+    
 
 InGame()
