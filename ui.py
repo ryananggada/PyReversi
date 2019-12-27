@@ -21,6 +21,8 @@ def Intro():
 def InGame():
     rf.resetBoard()
     curTurn = rf.BLACK
+    font = pygame.font.SysFont('Arial', 20)
+    big_font = pygame.font.SysFont('Arial', 100)
 
     tiles = Group()
     disks = Group()
