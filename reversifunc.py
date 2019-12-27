@@ -9,7 +9,7 @@ curBoard[3][3], curBoard[3][4] = WHITE, BLACK
 curBoard[4][3], curBoard[4][4] = BLACK, WHITE
 
 def resetBoard():
-    curBoard = [['.' for x in range(8)] for y in range(8)]
+    board = [['.' for x in range(8)] for y in range(8)]
     noMoves = 0
 
 def showBoard(board):
@@ -90,15 +90,6 @@ def getValidMoves(board, turn):
 
     return validMoves
 
-# temp function
-'''
-def showValidMoves(board, validMoves):
-    for x, y in validMoves:
-        board[x][y] = '!'
-
-    return board
-'''
-
 def makeMove(board, turn, x_pos, y_pos):
     tilesToFlip = getDisksToFlip(board, turn, x_pos, y_pos)
 
@@ -108,6 +99,18 @@ def makeMove(board, turn, x_pos, y_pos):
             board[x_cur][y_cur] = turn
 
     return board
+
+def getScore(board):
+    b_score, w_score = 0, 0
+
+    for x in range(8):
+        for y in range(8):
+            if board[x][y] == BLACK:
+                b_score += 1
+            elif board[x][y] == WHITE:
+                w_score += 1
+
+    return b_score, w_score
 
 """
 while getEmptyTiles(curBoard) != 0 and noMoves != 2:

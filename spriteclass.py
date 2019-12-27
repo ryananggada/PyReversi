@@ -1,6 +1,15 @@
 from pygame import *
 from pygame.sprite import *
 
+class text(Sprite):
+    def __init__(self, text, font, size, pos, color):
+        Sprite.__init__(self)
+        self.font = pygame.font.Font(font, size)
+        self.image = self.font.render(text, True, color)
+        self.rect = self.image.get_rect()
+        self.rect.left = pos[0]
+        self.rect.top = pos[1]
+
 class disk(Sprite):
     def __init__(self, pos, type, x_ind, y_ind):
         Sprite.__init__(self)
@@ -30,15 +39,12 @@ class disk(Sprite):
 
 
 class tile(Sprite):
-    def __init__(self, pos, type, x_ind, y_ind):
+    def __init__(self, pos, x_ind, y_ind):
         Sprite.__init__(self)
         self.type = type
         self.x_ind = x_ind
         self.y_ind = y_ind
-        self.sprites = [image.load("sprites/tile0.png")]
-
-        if self.type == '0':
-            self.image = self.sprites[0]
+        self.image = image.load("sprites/tile.png")
 
         self.rect = self.image.get_rect()
         self.rect.left = pos[0]
