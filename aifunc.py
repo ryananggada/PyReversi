@@ -1,5 +1,6 @@
 import math
 import random
+import copy
 import reversifunc as rf
 
 weights = [[ 100, -20,  10,   5,   5,  10, -20, 100],
@@ -11,61 +12,71 @@ weights = [[ 100, -20,  10,   5,   5,  10, -20, 100],
            [ -20, -50,  -2,  -2,  -2,  -2, -50, -20],
            [ 100, -20,  10,   5,   5,  10, -20, 100]]
 
-def evalScore(board, turn):
+# white is max black is min
+# need to improve heuristics
+def evalScore(board):
     score = 0
 
-    if turn == rf.BLACK:
-        opp = rf.WHITE
-    elif turn == rf.WHITE:
-        opp = rf.BLACK
-
     # mobility
-    score += 10 * (len(rf.getValidMoves(board, turn)) - len(rf.getValidMoves(board, opp)))
+    # score += 2 * (len(rf.getValidMoves(board, rf.WHITE)) - len(rf.getValidMoves(board, rf.BLACK)))
 
     # positioning of disks
     for x in range(8):
         for y in range(8):
-            if board[x][y] == turn:
+            if board[x][y] == rf.WHITE:
                 score += weights[x][y]
-            elif board[x][y] == opp:
+            elif board[x][y] == rf.BLACK:
                 score -= weights[x][y]
     return score
 
 
 def miniMax(board, depth, alpha, beta, isMaxPlayer):
+    bestMove = None
     if depth == 0: # need to set game over
-        return evalScore(board, rf.WHITE)
+        return evalScore(board),1
 
-    moves = rf.getValidMoves(board, rf.WHITE)
-    random.shuffle(moves)
-    bestMove = random.choice(moves)
     if isMaxPlayer:
-        value = -math.inf
+        max_value = -math.inf
+        moves = rf.getValidMoves(board, rf.WHITE)
+
+        if len(moves) > 0:
+            random.shuffle(moves)
+
         for a_move in moves:
-            tempBoard = board
+            tempBoard = copy.deepcopy(board)
             tempBoard = rf.makeMove(tempBoard, rf.WHITE, a_move[0], a_move[1])
-            curScore = miniMax(tempBoard, depth-1, alpha, beta, False)
+            curScore, move = miniMax(tempBoard, depth-1, alpha, beta, False)
+            
 
-            if curScore > value:
-                value = curScore
+            if curScore > max_value:
+                max_value = curScore
                 bestMove = a_move
 
-            alpha = max(alpha, value)
+            alpha = max(alpha, max_value)
             if alpha >= beta:
                 break
+        return max_value, bestMove
+
     else:
-        value = math.inf
-        for a_move in moves:
-            tempBoard = rf.curBoard
-            tempBoard = rf.makeMove(tempBoard, rf.BLACK, a_move[0], a_move[1])
-            curScore = miniMax(tempBoard, depth-1, alpha, beta, True)
+        min_value = math.inf
+        moves = rf.getValidMoves(board, rf.BLACK)
 
-            if curScore > value:
-                value = curScore
+        if len(moves) > 0:
+            random.shuffle(moves)
+
+
+        for a_move in moves:
+            tempBoard = copy.deepcopy(board)
+            tempBoard = rf.makeMove(tempBoard, rf.BLACK, a_move[0], a_move[1])
+            curScore, move = miniMax(tempBoard, depth-1, alpha, beta, True)
+
+            
+            if curScore > min_value:
+                min_value = curScore
                 bestMove = a_move
 
-            beta = min(beta, value)
+            beta = min(beta, min_value)
             if alpha >= beta:
                 break
 
-    return bestMove, value
+        return min_value, bestMove

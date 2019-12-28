@@ -48,13 +48,17 @@ def InGame():
     valid_moves = len(rf.getValidMoves(rf.curBoard, curTurn))
 
     flag = True
+    flag2 = True
     while flag:
         while rf.getEmptyTiles(rf.curBoard) != 0 and valid_moves != 0:
             validPos = rf.getValidMoves(rf.curBoard, curTurn)
             valid_moves = len(validPos)
-            if curTurn == rf.WHITE:
-                move, value = af.miniMax(rf.curBoard, 5, -math.inf, math.inf, False)
+
+            if curTurn == rf.WHITE and flag2 == True:
+                value, move = af.miniMax(rf.curBoard, 5, -math.inf, math.inf, True)
+                # do move here (remove flag 2)
                 print(move)
+                flag2 = False
             for evg in event.get():
                 if evg.type == QUIT:
                     display.quit()
@@ -81,6 +85,8 @@ def InGame():
                             blackText = sc.text('{}'.format(blackScore), HELV, 25, (10, 10), (180, 180, 180))
                             whiteText = sc.text('{}'.format(whiteScore), HELV, 25, (10, 40), (180, 180, 180))
                             texts.add(blackText, whiteText)
+                            flag2 = True
+                            # print(af.evalScore(rf.curBoard, curTurn))
 
             #print(af.miniMax(rf.curBoard, 0, -math.inf, math.inf, True))
             screen.fill((255, 255, 0))
