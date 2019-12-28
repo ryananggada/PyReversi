@@ -45,10 +45,16 @@ def InGame():
     blackText = sc.text('2', HELV, 25, (10, 10), (180, 180, 180))
     whiteText = sc.text('2', HELV, 25, (10, 40), (180, 180, 180))
     texts.add(blackText, whiteText)
+    valid_moves = len(rf.getValidMoves(rf.curBoard, curTurn))
 
-    while True:
-        while rf.getEmptyTiles(rf.curBoard) != 0 and rf.noMoves != 2:
+    flag = True
+    while flag:
+        while rf.getEmptyTiles(rf.curBoard) != 0 and valid_moves != 0:
             validPos = rf.getValidMoves(rf.curBoard, curTurn)
+            valid_moves = len(validPos)
+            if curTurn == rf.WHITE:
+                move, value = af.miniMax(rf.curBoard, 5, -math.inf, math.inf, False)
+                print(move)
             for evg in event.get():
                 if evg.type == QUIT:
                     display.quit()
@@ -83,4 +89,26 @@ def InGame():
             texts.draw(screen)
             display.update()
 
-InGame()
+        black, white = rf.getScore(rf.curBoard)
+        screen.fill((255, 255, 0))
+        black_score = big_font.render('Black got ' + str(black), False, (0,0,0))
+        white_score = big_font.render('White got ' + str(white), False, (0,0,0))
+        screen.blit(black_score, (260,200))
+        screen.blit(white_score, (260,30))
+        continue_button = sc.Button("Continue", 500,440, backcolor = (255,255,255))
+        button_sprite_group = Group(continue_button)
+        button_sprite_group.draw(screen)
+        display.update()
+        for ev in event.get():
+            if ev.type == QUIT:
+                pygame.quit()
+                exit()
+
+            elif ev.type == MOUSEBUTTONDOWN:
+                if continue_button.rect.collidepoint(mouse.get_pos()):
+                    flag = False
+
+
+while True:
+    InGame()
+

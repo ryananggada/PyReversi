@@ -49,3 +49,21 @@ class tile(Sprite):
         self.rect = self.image.get_rect()
         self.rect.left = pos[0]
         self.rect.top = pos[1]
+
+class Button(Sprite):
+    def __init__(self, message, x,y,fontsize = 42, backcolor = None, color = (0,0,0)):
+        Sprite.__init__(self)
+        self.color = color
+        self.backcolor = backcolor
+        self.x = x
+        self.y = y
+        self.message = message
+        self.font = pygame.font.Font(None, fontsize)
+        self.image = self.font.render(message,1, color, backcolor)
+        self.rect = self.image.get_rect()
+        self.rect.center = (x,y)
+
+    def change_colour(self,color):
+        self.color = color
+        self.image = self.font.render(self.message,1,color, self.backcolor)
+

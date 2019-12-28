@@ -29,6 +29,8 @@ def evalScore(board, turn):
                 score += weights[x][y]
             elif board[x][y] == opp:
                 score -= weights[x][y]
+    return score
+
 
 def miniMax(board, depth, alpha, beta, isMaxPlayer):
     if depth == 0: # need to set game over
@@ -40,7 +42,7 @@ def miniMax(board, depth, alpha, beta, isMaxPlayer):
     if isMaxPlayer:
         value = -math.inf
         for a_move in moves:
-            tempBoard = rf.curBoard
+            tempBoard = board
             tempBoard = rf.makeMove(tempBoard, rf.WHITE, a_move[0], a_move[1])
             curScore = miniMax(tempBoard, depth-1, alpha, beta, False)
 
