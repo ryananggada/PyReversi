@@ -3,14 +3,14 @@ import random
 import copy
 import reversifunc as rf
 
-weights = [[ 100, -20,  10,   5,   5,  10, -20, 100],
-           [ -20, -50,  -2,  -2,  -2,  -2, -50, -20],
+weights = [[ 200, -50,  10,   5,   5,  10, -50, 200],
+           [ -50, -100,  -2,  -2,  -2,  -2, -100, -50],
            [  10,  -2,   1,   1,   1,   1,  -2,  10],
            [   5,  -2,   1,   1,   1,   1,  -2,   3],
            [   5,  -2,   1,   1,   1,   1,  -2,   3],
            [  10,  -2,   1,   1,   1,   1,  -2,  10],
-           [ -20, -50,  -2,  -2,  -2,  -2, -50, -20],
-           [ 100, -20,  10,   5,   5,  10, -20, 100]]
+           [ -50, -100,  -2,  -2,  -2,  -2, -100, -50],
+           [ 200, -50,  10,   5,   5,  10, -50, 200]]
 
 # white is max black is min
 # need to improve heuristics
@@ -18,7 +18,7 @@ def evalScore(board):
     score = 0
 
     # mobility
-    # score += 2 * (len(rf.getValidMoves(board, rf.WHITE)) - len(rf.getValidMoves(board, rf.BLACK)))
+    score += 2 * (len(rf.getValidMoves(board, rf.WHITE)) - len(rf.getValidMoves(board, rf.BLACK)))
 
     # positioning of disks
     for x in range(8):
@@ -27,6 +27,7 @@ def evalScore(board):
                 score += weights[x][y]
             elif board[x][y] == rf.BLACK:
                 score -= weights[x][y]
+
     return score
 
 
@@ -55,6 +56,7 @@ def miniMax(board, depth, alpha, beta, isMaxPlayer):
             alpha = max(alpha, max_value)
             if alpha >= beta:
                 break
+        print("best move: " + str(bestMove) + " value: " + str(max_value))
         return max_value, bestMove
 
     else:
@@ -78,5 +80,5 @@ def miniMax(board, depth, alpha, beta, isMaxPlayer):
             beta = min(beta, min_value)
             if alpha >= beta:
                 break
-
+        print("best move: " + str(bestMove) + " value: " + str(min_value))
         return min_value, bestMove

@@ -48,17 +48,31 @@ def InGame():
     valid_moves = len(rf.getValidMoves(rf.curBoard, curTurn))
 
     flag = True
-    flag2 = True
     while flag:
         while rf.getEmptyTiles(rf.curBoard) != 0 and valid_moves != 0:
             validPos = rf.getValidMoves(rf.curBoard, curTurn)
             valid_moves = len(validPos)
 
-            if curTurn == rf.WHITE and flag2 == True:
-                value, move = af.miniMax(rf.curBoard, 5, -math.inf, math.inf, True)
-                # do move here (remove flag 2)
-                print(move)
-                flag2 = False
+            if curTurn == rf.WHITE:
+                value, move = af.miniMax(rf.curBoard, 1, -math.inf, math.inf, True)
+                if move in validPos:
+                    diskFlipped = rf.getDisksToFlip(rf.curBoard, curTurn , move[0], move[1])
+                    rf.curBoard = rf.makeMove(rf.curBoard, curTurn, move[0], move[1])
+                    blackScore, whiteScore = rf.getScore(rf.curBoard)
+                    place_disk = sc.disk(((move[0]+1)*72+128,(move[1]+1)*72+4), curTurn, move[0], move[1])
+                    disks.add(place_disk)
+
+                    for the_disk in disks:
+                        if [the_disk.x_ind, the_disk.y_ind] in diskFlipped:
+                            the_disk.flipDisk()
+
+                    curTurn = rf.BLACK
+
+                texts.empty()
+                blackText = sc.text('{}'.format(blackScore), HELV, 25, (10, 10), (180, 180, 180))
+                whiteText = sc.text('{}'.format(whiteScore), HELV, 25, (10, 40), (180, 180, 180))
+                texts.add(blackText, whiteText)
+
             for evg in event.get():
                 if evg.type == QUIT:
                     display.quit()
@@ -85,7 +99,6 @@ def InGame():
                             blackText = sc.text('{}'.format(blackScore), HELV, 25, (10, 10), (180, 180, 180))
                             whiteText = sc.text('{}'.format(whiteScore), HELV, 25, (10, 40), (180, 180, 180))
                             texts.add(blackText, whiteText)
-                            flag2 = True
                             # print(af.evalScore(rf.curBoard, curTurn))
 
             #print(af.miniMax(rf.curBoard, 0, -math.inf, math.inf, True))
@@ -110,11 +123,11 @@ def InGame():
                 pygame.quit()
                 exit()
 
-            elif ev.type == MOUSEBUTTONDOWN:
+            if ev.type == MOUSEBUTTONDOWN:
                 if continue_button.rect.collidepoint(mouse.get_pos()):
                     flag = False
 
 
-while True:
-    InGame()
+
+InGame()
 
