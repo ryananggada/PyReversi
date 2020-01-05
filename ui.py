@@ -54,7 +54,7 @@ def InGame():
             valid_moves = len(validPos)
 
             if curTurn == rf.WHITE:
-                value, move = af.miniMax(rf.curBoard, 1, -math.inf, math.inf, True)
+                value, move = af.miniMax(rf.curBoard, 5, -math.inf, math.inf, True)
                 if move in validPos:
                     diskFlipped = rf.getDisksToFlip(rf.curBoard, curTurn , move[0], move[1])
                     rf.curBoard = rf.makeMove(rf.curBoard, curTurn, move[0], move[1])

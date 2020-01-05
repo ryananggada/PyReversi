@@ -54,8 +54,8 @@ def miniMax(board, depth, alpha, beta, isMaxPlayer):
                 bestMove = a_move
 
             alpha = max(alpha, max_value)
-            if alpha >= beta:
-                break
+            # if alpha >= beta:
+            #     break
         print("best move: " + str(bestMove) + " value: " + str(max_value))
         return max_value, bestMove
 
@@ -73,12 +73,12 @@ def miniMax(board, depth, alpha, beta, isMaxPlayer):
             curScore, move = miniMax(tempBoard, depth-1, alpha, beta, True)
 
             
-            if curScore > min_value:
+            if curScore < min_value:
                 min_value = curScore
                 bestMove = a_move
 
             beta = min(beta, min_value)
-            if alpha >= beta:
-                break
+            # if alpha >= beta:
+            #     break
         print("best move: " + str(bestMove) + " value: " + str(min_value))
         return min_value, bestMove
