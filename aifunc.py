@@ -2,83 +2,81 @@ import math
 import random
 import copy
 import reversifunc as rf
+import globalvar as gv
 
+# the weights of board, big positive value means top priority for opponent
 weights = [[ 200, -50,  10,   5,   5,  10, -50, 200],
-           [ -50, -100,  -2,  -2,  -2,  -2, -100, -50],
+           [ -50,-100,  -2,  -2,  -2,  -2,-100, -50],
            [  10,  -2,   1,   1,   1,   1,  -2,  10],
            [   5,  -2,   1,   1,   1,   1,  -2,   3],
            [   5,  -2,   1,   1,   1,   1,  -2,   3],
            [  10,  -2,   1,   1,   1,   1,  -2,  10],
-           [ -50, -100,  -2,  -2,  -2,  -2, -100, -50],
+           [ -50,-100,  -2,  -2,  -2,  -2,-100, -50],
            [ 200, -50,  10,   5,   5,  10, -50, 200]]
 
-# white is max black is min
-# need to improve heuristics
+# evaluate score of the opponent for minimax algorithm, based on mobility and positioning of disks
 def evalScore(board):
     score = 0
 
-    # mobility
-    score += 2 * (len(rf.getValidMoves(board, rf.WHITE)) - len(rf.getValidMoves(board, rf.BLACK)))
+    # mobility of disks
+    score += 5 * (len(rf.getValidMoves(board, gv.P2)) - len(rf.getValidMoves(board, gv.P1)))
 
     # positioning of disks
     for x in range(8):
         for y in range(8):
-            if board[x][y] == rf.WHITE:
+            if board[x][y] == gv.P2:
                 score += weights[x][y]
-            elif board[x][y] == rf.BLACK:
+            elif board[x][y] == gv.P1:
                 score -= weights[x][y]
 
     return score
 
-
+# minimax algorithm with alpha-beta pruning; opponent is maximizing and player is minimizing
 def miniMax(board, depth, alpha, beta, isMaxPlayer):
     bestMove = None
-    if depth == 0: # need to set game over
-        return evalScore(board),1
 
+    if depth == 0:
+        return evalScore(board), 1
+
+    # opponent's turn
     if isMaxPlayer:
-        max_value = -math.inf
-        moves = rf.getValidMoves(board, rf.WHITE)
+        maxValue = -math.inf
+        moves = rf.getValidMoves(board, gv.P2)
 
         if len(moves) > 0:
             random.shuffle(moves)
 
-        for a_move in moves:
+        for aMove in moves:
             tempBoard = copy.deepcopy(board)
-            tempBoard = rf.makeMove(tempBoard, rf.WHITE, a_move[0], a_move[1])
+            tempBoard = rf.makeMove(tempBoard, gv.P2, aMove[0], aMove[1])
             curScore, move = miniMax(tempBoard, depth-1, alpha, beta, False)
-            
 
-            if curScore > max_value:
-                max_value = curScore
-                bestMove = a_move
+            if curScore > maxValue:
+                maxValue = curScore
+                bestMove = aMove
 
-            alpha = max(alpha, max_value)
-            # if alpha >= beta:
-            #     break
-        print("best move: " + str(bestMove) + " value: " + str(max_value))
-        return max_value, bestMove
+            alpha = max(alpha, maxValue)
+            if alpha >= beta:
+                break
 
+        return maxValue, bestMove
+
+    # player's turn
     else:
-        min_value = math.inf
-        moves = rf.getValidMoves(board, rf.BLACK)
+        minValue = math.inf
+        moves = rf.getValidMoves(board, gv.P1)
 
-        if len(moves) > 0:
-            random.shuffle(moves)
-
-
-        for a_move in moves:
+        for aMove in moves:
             tempBoard = copy.deepcopy(board)
-            tempBoard = rf.makeMove(tempBoard, rf.BLACK, a_move[0], a_move[1])
+            tempBoard = rf.makeMove(tempBoard, gv.P1, aMove[0], aMove[1])
             curScore, move = miniMax(tempBoard, depth-1, alpha, beta, True)
 
-            
-            if curScore < min_value:
-                min_value = curScore
-                bestMove = a_move
+            if curScore < minValue:
+                minValue = curScore
+                bestMove = aMove
 
-            beta = min(beta, min_value)
-            # if alpha >= beta:
-            #     break
-        print("best move: " + str(bestMove) + " value: " + str(min_value))
-        return min_value, bestMove
+            beta = min(beta, minValue)
+            if alpha >= beta:
+                break
+
+        return minValue, bestMove

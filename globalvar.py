@@ -1,7 +1,11 @@
-BLACK = 'x'
-WHITE = 'o'
-curBoard = [['.' for x in range(8)] for y in range(8)]
-noMoves = 0
-
-curBoard[3][3], curBoard[3][4] = WHITE, BLACK
-curBoard[4][3], curBoard[4][4] = BLACK, WHITE
+# global constants are stored here
+P1 = 'x'
+P2 = 'o'
+diff = 2
+WIDTH, HEIGHT = 960, 720
+BLACK = (0,0,0)
+BROWN = (205,133,63)
+GREY = (230,230,230)
+GOLD = (255,215,0)
+HELV = "sprites/Helvetica.ttf"
+NEXT = "sprites/TheNextFont.ttf"

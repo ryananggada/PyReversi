@@ -1,26 +1,24 @@
 import random
+import globalvar as gv
 
-BLACK = 'x'
-WHITE = 'o'
-curBoard = [['.' for x in range(8)] for y in range(8)]
-noMoves = 0
+# initialize the board to starting position
+def initializeBoard(board):
+    board[3][3], board[3][4] = gv.P2, gv.P1
+    board[4][3], board[4][4] = gv.P1, gv.P2
+    return board
 
-curBoard[3][3], curBoard[3][4] = WHITE, BLACK
-curBoard[4][3], curBoard[4][4] = BLACK, WHITE
-
-def resetBoard():
-    board = [['.' for x in range(8)] for y in range(8)]
-    noMoves = 0
-
+# shows the board, used for debugging purposes
 def showBoard(board):
     for x in range(8):
         for y in range(8):
             print(board[x][y], end=' ')
         print('')
 
+# checks if the value assigned are within the index of the board
 def isOnBoard(x, y):
     return (0<=x<=7) and (0<=y<=7)
 
+# get the amount of empty tiles available in a board
 def getEmptyTiles(board):
     empty = 0
 
@@ -31,15 +29,15 @@ def getEmptyTiles(board):
 
     return empty
 
-# returns enemy's piece that can be flipped when a player place their piece in a selected position
+# returns opponent's pieces that can be flipped when a player place their piece in a selected position
 def getDisksToFlip(board, turn, x_pos, y_pos):
     if board[x_pos][y_pos] != '.' or not isOnBoard(x_pos, y_pos):
         return []
 
-    if (turn == BLACK):
-        enemy = WHITE
-    elif (turn == WHITE):
-        enemy = BLACK
+    if (turn == gv.P1):
+        enemy = gv.P2
+    elif (turn == gv.P2):
+        enemy = gv.P1
 
     validDisks = []
 
@@ -80,6 +78,7 @@ def getDisksToFlip(board, turn, x_pos, y_pos):
 
     return validDisks
 
+# get the valid moves in coordinates of a board
 def getValidMoves(board, turn):
     validMoves = []
 
@@ -90,6 +89,7 @@ def getValidMoves(board, turn):
 
     return validMoves
 
+# modify the board after a disk is placed on it
 def makeMove(board, turn, x_pos, y_pos):
     tilesToFlip = getDisksToFlip(board, turn, x_pos, y_pos)
 
@@ -100,33 +100,15 @@ def makeMove(board, turn, x_pos, y_pos):
 
     return board
 
+# get the score of the pieces in a board
 def getScore(board):
     b_score, w_score = 0, 0
 
     for x in range(8):
         for y in range(8):
-            if board[x][y] == BLACK:
+            if board[x][y] == gv.P1:
                 b_score += 1
-            elif board[x][y] == WHITE:
+            elif board[x][y] == gv.P2:
                 w_score += 1
 
     return b_score, w_score
-
-"""
-while getEmptyTiles(curBoard) != 0 and noMoves != 2:
-    print(turn)
-    validMoves = getValidMoves(curBoard, turn)
-    print(validMoves)
-    showBoard(curBoard)
-    if (len(validMoves) != 0):
-        moveChosen = random.choice(validMoves)
-        curBoard = makeMove(curBoard, turn, moveChosen[0], moveChosen[1])
-        noMoves = 0
-    else:
-        noMoves += 1
-
-    if turn == BLACK:
-        turn = WHITE
-    else:
-        turn = BLACK
-"""

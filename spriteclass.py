@@ -1,6 +1,7 @@
 from pygame import *
 from pygame.sprite import *
 
+# text display for UI
 class text(Sprite):
     def __init__(self, text, font, size, pos, color):
         Sprite.__init__(self)
@@ -10,60 +11,59 @@ class text(Sprite):
         self.rect.left = pos[0]
         self.rect.top = pos[1]
 
-class disk(Sprite):
-    def __init__(self, pos, type, x_ind, y_ind):
+# buttons for UI
+class button(Sprite):
+    def __init__(self, pos, type):
         Sprite.__init__(self)
         self.type = type
-        self.x_ind = x_ind
-        self.y_ind = y_ind
-        self.sprites = [image.load("sprites/w_disk0.png"), image.load("sprites/w_disk1.png"), image.load("sprites/w_disk2.png"), image.load("sprites/w_disk3.png"),
-                        image.load("sprites/b_disk0.png"), image.load("sprites/b_disk1.png"), image.load("sprites/b_disk2.png"), image.load("sprites/b_disk3.png")]
+        self.sprites = [image.load("sprites/button0.png"), image.load("sprites/button1.png"), image.load("sprites/button2.png")]
 
-        if self.type == 'o':
+        if self.type == '0':
             self.image = self.sprites[0]
-        elif self.type == 'x':
-            self.image = self.sprites[4]
+        elif self.type == '1':
+            self.image = self.sprites[1]
+        elif self.type == '2':
+            self.image = self.sprites[2]
+
+        self.rect = self.image.get_rect()
+        self.rect.left = pos[0]
+        self.rect.top = pos[1]
+
+# disk pieces
+class disk(Sprite):
+    def __init__(self, pos, type, xInd, yInd):
+        Sprite.__init__(self)
+        self.type = type
+        self.xInd = xInd
+        self.yInd = yInd
+        self.sprites = [image.load("sprites/b_disk.png"), image.load("sprites/w_disk.png")]
+
+        if self.type == 'x':
+            self.image = self.sprites[0]
+        elif self.type == 'o':
+            self.image = self.sprites[1]
 
         self.rect = self.image.get_rect()
         self.rect.left = pos[0]
         self.rect.top = pos[1]
 
     def flipDisk(self):
-        if self.type == 'o':
-            self.type = 'x'
-            self.image = self.sprites[4]
-
-        elif self.type == 'x':
+        if self.type == 'x':
             self.type = 'o'
+            self.image = self.sprites[1]
+
+        elif self.type == 'o':
+            self.type = 'x'
             self.image = self.sprites[0]
 
-
+# board tiles
 class tile(Sprite):
-    def __init__(self, pos, x_ind, y_ind):
+    def __init__(self, pos, xInd, yInd):
         Sprite.__init__(self)
-        self.type = type
-        self.x_ind = x_ind
-        self.y_ind = y_ind
+        self.xInd = xInd
+        self.yInd = yInd
         self.image = image.load("sprites/tile.png")
 
         self.rect = self.image.get_rect()
         self.rect.left = pos[0]
         self.rect.top = pos[1]
-
-class Button(Sprite):
-    def __init__(self, message, x,y,fontsize = 42, backcolor = None, color = (0,0,0)):
-        Sprite.__init__(self)
-        self.color = color
-        self.backcolor = backcolor
-        self.x = x
-        self.y = y
-        self.message = message
-        self.font = pygame.font.Font(None, fontsize)
-        self.image = self.font.render(message,1, color, backcolor)
-        self.rect = self.image.get_rect()
-        self.rect.center = (x,y)
-
-    def change_colour(self,color):
-        self.color = color
-        self.image = self.font.render(self.message,1,color, self.backcolor)
-
