@@ -40,11 +40,11 @@ def Intro():
                     InGame()
 
                 if normButton.rect.collidepoint(mouse.get_pos()):
-                    gv.diff = 4
+                    gv.diff = 3
                     InGame()
 
                 if hardButton.rect.collidepoint(mouse.get_pos()):
-                    gv.diff = 6
+                    gv.diff = 4
                     InGame()
 
             if evi.type == QUIT:

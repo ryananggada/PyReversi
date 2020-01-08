@@ -18,9 +18,6 @@ weights = [[ 200, -50,  10,   5,   5,  10, -50, 200],
 def evalScore(board):
     score = 0
 
-    # mobility of disks
-    score += 5 * (len(rf.getValidMoves(board, gv.P2)) - len(rf.getValidMoves(board, gv.P1)))
-
     # positioning of disks
     for x in range(8):
         for y in range(8):
