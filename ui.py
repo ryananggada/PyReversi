@@ -236,6 +236,7 @@ def InGame():
                         texts.add(blackText, whiteText, turnText)
 
                 else:
+                    curTurn = gv.P1
                     texts.empty()
                     blackText = sc.text('BLACK: {}'.format(blackScore), gv.HELV, 25, (10, 10), gv.GREY)
                     whiteText = sc.text('WHITE: {}'.format(whiteScore), gv.HELV, 25, (10, 40), gv.GREY)

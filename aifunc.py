@@ -15,15 +15,20 @@ weights = [[ 100, -20,  10,   5,   5,  10, -20, 100],
            [ 100, -20,  10,   5,   5,  10, -20, 100]]
 
 # evaluate score of the opponent for minimax algorithm, based on mobility and positioning of disks
-def evalScore(board):
+def evalScore(board, turn):
     score = 0
+
+    if turn == gv.P1:
+        opp = gv.P2
+    elif turn == gv.P2:
+        opp = gv.P1
 
     # positioning of disks
     for x in range(8):
         for y in range(8):
-            if board[x][y] == gv.P2:
+            if board[x][y] == turn:
                 score += weights[x][y]
-            elif board[x][y] == gv.P1:
+            elif board[x][y] == opp:
                 score -= weights[x][y]
 
     return score
@@ -37,8 +42,8 @@ def miniMax(board, depth, alpha, beta, isMaxPlayer, turn):
     elif turn == gv.P2:
         opp = gv.P1
 
-    if depth == 0:
-        return evalScore(board), 1
+    if depth == 0 or len(rf.getValidMoves(board, turn)) == 0:
+        return evalScore(board, turn), 1
 
     # opponent's turn
     if isMaxPlayer:
