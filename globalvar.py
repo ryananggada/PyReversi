@@ -1,7 +1,9 @@
 # global constants are stored here
 P1 = 'x'
 P2 = 'o'
+aiMode = False
 diff = 2
+aiPlay = 2
 WIDTH, HEIGHT = 960, 720
 BLACK = (0,0,0)
 BROWN = (205,133,63)

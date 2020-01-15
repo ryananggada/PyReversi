@@ -5,14 +5,14 @@ import reversifunc as rf
 import globalvar as gv
 
 # the weights of board, big positive value means top priority for opponent
-weights = [[ 200, -50,  10,   5,   5,  10, -50, 200],
-           [ -50,-100,  -2,  -2,  -2,  -2,-100, -50],
+weights = [[ 100, -20,  10,   5,   5,  10, -20, 100],
+           [ -20, -50,  -2,  -2,  -2,  -2, -50, -20],
            [  10,  -2,   1,   1,   1,   1,  -2,  10],
-           [   5,  -2,   1,   1,   1,   1,  -2,   3],
-           [   5,  -2,   1,   1,   1,   1,  -2,   3],
+           [   5,  -2,   1,   1,   1,   1,  -2,   5],
+           [   5,  -2,   1,   1,   1,   1,  -2,   5],
            [  10,  -2,   1,   1,   1,   1,  -2,  10],
-           [ -50,-100,  -2,  -2,  -2,  -2,-100, -50],
-           [ 200, -50,  10,   5,   5,  10, -50, 200]]
+           [ -20, -50,  -2,  -2,  -2,  -2, -50, -20],
+           [ 100, -20,  10,   5,   5,  10, -20, 100]]
 
 # evaluate score of the opponent for minimax algorithm, based on mobility and positioning of disks
 def evalScore(board):
@@ -29,8 +29,13 @@ def evalScore(board):
     return score
 
 # minimax algorithm with alpha-beta pruning; opponent is maximizing and player is minimizing
-def miniMax(board, depth, alpha, beta, isMaxPlayer):
+def miniMax(board, depth, alpha, beta, isMaxPlayer, turn):
     bestMove = None
+
+    if turn == gv.P1:
+        opp = gv.P2
+    elif turn == gv.P2:
+        opp = gv.P1
 
     if depth == 0:
         return evalScore(board), 1
@@ -38,15 +43,15 @@ def miniMax(board, depth, alpha, beta, isMaxPlayer):
     # opponent's turn
     if isMaxPlayer:
         maxValue = -math.inf
-        moves = rf.getValidMoves(board, gv.P2)
+        moves = rf.getValidMoves(board, turn)
 
         if len(moves) > 0:
             random.shuffle(moves)
 
         for aMove in moves:
             tempBoard = copy.deepcopy(board)
-            tempBoard = rf.makeMove(tempBoard, gv.P2, aMove[0], aMove[1])
-            curScore, move = miniMax(tempBoard, depth-1, alpha, beta, False)
+            tempBoard = rf.makeMove(tempBoard, turn, aMove[0], aMove[1])
+            curScore, move = miniMax(tempBoard, depth-1, alpha, beta, False, turn)
 
             if curScore > maxValue:
                 maxValue = curScore
@@ -61,12 +66,12 @@ def miniMax(board, depth, alpha, beta, isMaxPlayer):
     # player's turn
     else:
         minValue = math.inf
-        moves = rf.getValidMoves(board, gv.P1)
+        moves = rf.getValidMoves(board, opp)
 
         for aMove in moves:
             tempBoard = copy.deepcopy(board)
-            tempBoard = rf.makeMove(tempBoard, gv.P1, aMove[0], aMove[1])
-            curScore, move = miniMax(tempBoard, depth-1, alpha, beta, True)
+            tempBoard = rf.makeMove(tempBoard, opp, aMove[0], aMove[1])
+            curScore, move = miniMax(tempBoard, depth-1, alpha, beta, True, turn)
 
             if curScore < minValue:
                 minValue = curScore
