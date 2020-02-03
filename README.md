@@ -6,6 +6,8 @@ A Reversi game made with Python3 and pygame that utilize artificial intelligence
   <img src="reversiPreview.png" width=500px>
 </p>
 
+<i>Created by: Ryan Anggada Kho, Georgius Kurli and Nicolas Lee</i>
+
 ## To run this code
 
 Make sure that pygame is installed by running this code in the terminal or command line:
