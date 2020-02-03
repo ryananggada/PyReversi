@@ -2,6 +2,10 @@
 
 A Reversi game made with Python3 and pygame that utilize artificial intelligence for the opponent. The algorithm used was Minimax with Alpha-Beta Pruning.
 
+<p align=center>
+  <img src="reversiPreview.png" width=500px>
+</p>
+
 ## To run this code
 
 Make sure that pygame is installed by running this code in the terminal or command line:
