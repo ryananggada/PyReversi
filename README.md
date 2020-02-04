@@ -18,14 +18,14 @@ Then, simply run "runme.py" to start the game.
 
 ## Files Information
 
-runme.py - Run this code with Python3 to start the game
+runme.py: Run this code with Python3 to start the game
 
-ui.py - Code that builds up the game to be interactive
+ui.py: Code that builds up the game to be interactive
 
-reversifunc.py - Function that runs the Reversi mechanism
+reversifunc.py: Function that runs the Reversi mechanism
 
-globalvar.py - Store its global variable
+globalvar.py: Store its global variable
 
-spriteclass.py - Sprite code for the game
+spriteclass.py: Sprite code for the game
 
-aifunc.py - AI Function, Minimax alogirthm with alpha-beta pruning
+aifunc.py: AI Function, Minimax alogirthm with alpha-beta pruning
